@@ -54,10 +54,6 @@ export const PoolConfigCard = (props: {
   const {
     tradeFeeNumerator,
     tradeFeeDenominator,
-    ownerTradeFeeNumerator,
-    ownerTradeFeeDenominator,
-    ownerWithdrawFeeNumerator,
-    ownerWithdrawFeeDenominator,
   } = props.options;
 
   return (
@@ -79,7 +75,7 @@ export const PoolConfigCard = (props: {
         </>
         <>
           <span>Owner Trading Fee:</span>
-          <FeeInput
+          {/* <FeeInput
             numerator={ownerTradeFeeNumerator}
             denominator={ownerTradeFeeDenominator}
             set={(numerator, denominator) =>
@@ -89,11 +85,11 @@ export const PoolConfigCard = (props: {
                 ownerTradeFeeDenominator: denominator,
               })
             }
-          />
+          /> */}
         </>
         <>
           <span>Withdraw Fee:</span>
-          <FeeInput
+          {/* <FeeInput
             numerator={ownerWithdrawFeeNumerator}
             denominator={ownerWithdrawFeeDenominator}
             set={(numerator, denominator) =>
@@ -103,7 +99,7 @@ export const PoolConfigCard = (props: {
                 ownerWithdrawFeeDenominator: denominator,
               })
             }
-          />
+          /> */}
         </>
         <>
           <span>Curve Type:</span>

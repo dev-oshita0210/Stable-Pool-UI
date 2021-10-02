@@ -67,12 +67,6 @@ export const createInitSwapInstruction = (
   curveType: number,
   tradeFeeNumerator: number,
   tradeFeeDenominator: number,
-  ownerTradeFeeNumerator: number,
-  ownerTradeFeeDenominator: number,
-  ownerWithdrawFeeNumerator: number,
-  ownerWithdrawFeeDenominator: number,
-  hostFeeNumerator: number,
-  hostFeeDenominator: number
 ): TransactionInstruction => {
   const keys = [
     { pubkey: tokenSwapAccount.publicKey, isSigner: false, isWritable: true },
@@ -90,12 +84,6 @@ export const createInitSwapInstruction = (
     BufferLayout.u8("nonce"),
     BufferLayout.nu64("tradeFeeNumerator"),
     BufferLayout.nu64("tradeFeeDenominator"),
-    BufferLayout.nu64("ownerTradeFeeNumerator"),
-    BufferLayout.nu64("ownerTradeFeeDenominator"),
-    BufferLayout.nu64("ownerWithdrawFeeNumerator"),
-    BufferLayout.nu64("ownerWithdrawFeeDenominator"),
-    BufferLayout.nu64('hostFeeNumerator'),
-    BufferLayout.nu64('hostFeeDenominator'),
     BufferLayout.u8("curveType"),
     BufferLayout.blob(32, 'curveParameters'),
   ]);
@@ -107,12 +95,6 @@ export const createInitSwapInstruction = (
         nonce,
         tradeFeeNumerator,
         tradeFeeDenominator,
-        ownerTradeFeeNumerator,
-        ownerTradeFeeDenominator,
-        ownerWithdrawFeeNumerator,
-        ownerWithdrawFeeDenominator,
-        hostFeeNumerator,
-        hostFeeDenominator,
         curveType,
       },
       data

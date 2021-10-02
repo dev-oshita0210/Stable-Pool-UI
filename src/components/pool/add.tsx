@@ -37,17 +37,12 @@ export const AddToLiquidity = () => {
     curveType: 0,
     tradeFeeNumerator: 40,
     tradeFeeDenominator: DEFAULT_DENOMINATOR,
-    ownerTradeFeeNumerator: 5,
-    ownerTradeFeeDenominator: DEFAULT_DENOMINATOR,
-    ownerWithdrawFeeNumerator: 0,
-    ownerWithdrawFeeDenominator: DEFAULT_DENOMINATOR,
-    hostFeeNumerator: 20,
-    hostFeeDenominator: 100,
   });
 
   const executeAction = !connected
     ? wallet.connect
     : async () => {
+      console.log(A, B);
       if (A.account && B.account && A.mint && B.mint) {
         setPendingTx(true);
         const components = [

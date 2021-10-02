@@ -167,6 +167,7 @@ export const swap = async (
   // see: https://uniswap.org/docs/v2/advanced-topics/pricing/
   // as well as native uniswap v2 oracle: https://uniswap.org/docs/v2/core-concepts/oracles/
   const amountIn = components[0].amount; // these two should include slippage
+  const amountOut = components[1].amount;
   const minAmountOut = components[1].amount * (1 - SLIPPAGE);
   console.log(SLIPPAGE);
   const holdingA =
@@ -536,6 +537,7 @@ async function _addLiquidityExistingPool(
 
   const reserve0 = accountA.info.amount.toNumber();
   const reserve1 = accountB.info.amount.toNumber();
+  
   const fromA =
     accountA.info.mint.toBase58() === components[0].mintAddress
       ? components[0]
@@ -554,11 +556,12 @@ async function _addLiquidityExistingPool(
   // as well as native uniswap v2 oracle: https://uniswap.org/docs/v2/core-concepts/oracles/
   const amount0 = fromA.amount;
   const amount1 = fromB.amount;
-
-  const liquidity = Math.min(
-    (amount0 * (1 - SLIPPAGE) * supply) / reserve0,
-    (amount1 * (1 - SLIPPAGE) * supply) / reserve1
-  );
+  const liquidity = (amount0 + amount1)/20.0;
+  // const liquidity = Math.min(
+  //   (amount0 * (1 - SLIPPAGE) * supply) / reserve0,
+  //   (amount1 * (1 - SLIPPAGE) * supply) / reserve1
+  // );
+  console.log(amount0, amount1, supply, liquidity, reserve0, reserve1);
   const instructions: TransactionInstruction[] = [];
   const cleanupInstructions: TransactionInstruction[] = [];
 
@@ -575,6 +578,7 @@ async function _addLiquidityExistingPool(
     amount0 + accountRentExempt,
     signers
   );
+  console.log(fromA);
   const fromKeyB = getWrappedAccount(
     instructions,
     cleanupInstructions,
@@ -583,7 +587,7 @@ async function _addLiquidityExistingPool(
     amount1 + accountRentExempt,
     signers
   );
-
+  console.log(fromB);
   let toAccount = findOrCreateAccountByMint(
     wallet.publicKey,
     wallet.publicKey,
@@ -594,7 +598,7 @@ async function _addLiquidityExistingPool(
     signers,
     new Set<string>([pool.pubkeys.feeAccount.toBase58()])
   );
-
+  console.log(instructions)
   // create approval for transfer transactions
   instructions.push(
     Token.createApproveInstruction(
@@ -606,7 +610,7 @@ async function _addLiquidityExistingPool(
       amount0
     )
   );
-
+  console.log(instructions)
   instructions.push(
     Token.createApproveInstruction(
       programIds().token,
@@ -617,7 +621,7 @@ async function _addLiquidityExistingPool(
       amount1
     )
   );
-
+  console.log(instructions)
   // depoist
   instructions.push(
     depositInstruction(
@@ -637,7 +641,7 @@ async function _addLiquidityExistingPool(
       amount1
     )
   );
-
+  console.log(instructions)
   let tx = await sendTransaction(
     connection,
     wallet,
@@ -940,12 +944,6 @@ async function _addLiquidityNewPool(
       options.curveType,
       options.tradeFeeNumerator,
       options.tradeFeeDenominator,
-      options.ownerTradeFeeNumerator,
-      options.ownerTradeFeeDenominator,
-      options.ownerWithdrawFeeNumerator,
-      options.ownerWithdrawFeeDenominator,
-      options.hostFeeNumerator,
-      options.hostFeeDenominator,
     )
   );
 
