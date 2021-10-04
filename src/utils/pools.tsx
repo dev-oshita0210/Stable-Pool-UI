@@ -47,7 +47,7 @@ export const removeLiquidity = async (
   if (!pool) {
     return;
   }
-
+  console.log("remove liquidity");
   notify({
     message: "Removing Liquidity...",
     description: "Please review transactions to approve.",
@@ -132,7 +132,7 @@ export const removeLiquidity = async (
       minAmount1
     )
   );
-
+  console.log(instructions);
   let tx = await sendTransaction(
     connection,
     wallet,

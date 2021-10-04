@@ -19,8 +19,11 @@ export const RemoveLiquidity = (props: {
     try {
       setPendingTx(true);
       // TODO: calculate percentage based on user input
+      console.log("1");
       let liquidityAmount = account.info.amount.toNumber();
+      console.log("2");
       await removeLiquidity(connection, wallet, liquidityAmount, account, pool);
+      console.log("3");
     } catch {
       notify({
         description:
