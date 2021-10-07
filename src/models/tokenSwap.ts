@@ -84,9 +84,21 @@ export const createInitSwapInstruction = (
     BufferLayout.u8("nonce"),
     BufferLayout.nu64("tradeFeeNumerator"),
     BufferLayout.nu64("tradeFeeDenominator"),
+    BufferLayout.nu64("tradeFeeNumerator1"),
+    BufferLayout.nu64("tradeFeeDenominator1"),
+    BufferLayout.nu64("tradeFeeNumerator2"),
+    BufferLayout.nu64("tradeFeeDenominator2"),
+    BufferLayout.nu64("tradeFeeNumerator3"),
+    BufferLayout.nu64("tradeFeeDenominator3"),
     BufferLayout.u8("curveType"),
     BufferLayout.blob(32, 'curveParameters'),
   ]);
+  let zero:number = 0;
+  let zero1:number = 0;
+  let zero2:number = 0;
+  let zero3:number = 0;
+  let zero4:number = 0;
+  let zero5:number = 0;
   let data = Buffer.alloc(1024);
   {
     const encodeLength = commandDataLayout.encode(
@@ -95,7 +107,13 @@ export const createInitSwapInstruction = (
         nonce,
         tradeFeeNumerator,
         tradeFeeDenominator,
-        curveType,
+        zero,
+        zero1,
+        zero2,
+        zero3,
+        zero4,
+        zero5,
+        curveType,        
       },
       data
     );

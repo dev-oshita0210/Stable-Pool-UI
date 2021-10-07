@@ -175,7 +175,7 @@ export const sendTransaction = async (
     const status = (
       await connection.confirmTransaction(txid, options && options.commitment)
     ).value;
-
+      console.log(awaitConfirmation);
     if (status.err) {
       // TODO: notify
       notify({

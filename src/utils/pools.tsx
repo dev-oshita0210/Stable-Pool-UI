@@ -928,7 +928,6 @@ async function _addLiquidityNewPool(
       )
     );
   });
-
   instructions.push(
     createInitSwapInstruction(
       tokenSwapAccount,
@@ -943,10 +942,10 @@ async function _addLiquidityNewPool(
       nonce,
       options.curveType,
       options.tradeFeeNumerator,
-      options.tradeFeeDenominator,
+      options.tradeFeeDenominator
     )
   );
-
+  console.log("djkslffffffffffffffffffffffff");
   // All instructions didn't fit in single transaction
   // initialize and provide inital liquidity to swap in 2nd (this prevents loss of funds)
   tx = await sendTransaction(

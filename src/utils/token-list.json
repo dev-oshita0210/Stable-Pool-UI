@@ -166,13 +166,13 @@
   "localnet": [
     {
       "tokenSymbol": "USDT",
-      "mintAddress": "33FVBwYdXghrYtZ25qsCmBCdhKW6U6f2LqBajkp9rPRq",
+      "mintAddress": "4RRLCPv5aSw6Yw9t9e6vbTUKtGoSgDN4nc4nEhoH1akD",
       "tokenName": "Solana",
       "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png"
     },
     {
       "tokenSymbol": "wUSDT",
-      "mintAddress": "4nx9uvqP4RYQBTCUuAPqWfjDJD7M1FWZs4FndBo2vqhY",
+      "mintAddress": "4mitLwcYB2Ytcz4117cB95PJdm83ZEJqLejURnH83GxN",
       "tokenName": "Solana",
       "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/bitcoin/info/logo.png"
     }
