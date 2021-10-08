@@ -84,12 +84,12 @@ export const createInitSwapInstruction = (
     BufferLayout.u8("nonce"),
     BufferLayout.nu64("tradeFeeNumerator"),
     BufferLayout.nu64("tradeFeeDenominator"),
-    BufferLayout.nu64("tradeFeeNumerator1"),
-    BufferLayout.nu64("tradeFeeDenominator1"),
-    BufferLayout.nu64("tradeFeeNumerator2"),
-    BufferLayout.nu64("tradeFeeDenominator2"),
-    BufferLayout.nu64("tradeFeeNumerator3"),
-    BufferLayout.nu64("tradeFeeDenominator3"),
+    BufferLayout.nu64("ownerTradeFeeNumerator"),
+    BufferLayout.nu64("ownerTradeFeeDenominator"),
+    BufferLayout.nu64("ownerWithdrawFeeNumerator"),
+    BufferLayout.nu64("ownerWithdrawFeeDenominator"),
+    BufferLayout.nu64("hostFeeNumerator"),
+    BufferLayout.nu64("hostFeeDenominator"),
     BufferLayout.u8("curveType"),
     BufferLayout.blob(32, 'curveParameters'),
   ]);
@@ -113,7 +113,7 @@ export const createInitSwapInstruction = (
         zero3,
         zero4,
         zero5,
-        curveType,        
+        curveType,
       },
       data
     );
@@ -172,6 +172,7 @@ export const depositInstruction = (
     { pubkey: poolAccount, isSigner: false, isWritable: true },
     { pubkey: tokenProgramId, isSigner: false, isWritable: false },
   ];
+  console.log(keys);
   return new TransactionInstruction({
     keys,
     programId: swapProgramId,

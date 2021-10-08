@@ -42,7 +42,6 @@ export const AddToLiquidity = () => {
   const executeAction = !connected
     ? wallet.connect
     : async () => {
-      console.log(A, B);
       if (A.account && B.account && A.mint && B.mint) {
         setPendingTx(true);
         const components = [
@@ -57,7 +56,7 @@ export const AddToLiquidity = () => {
             amount: B.convertAmount(),
           },
         ];
-
+        console.log(connection, wallet, components, slippage, pool, options);
         addLiquidity(connection, wallet, components, slippage, pool, options)
           .then(() => {
             setPendingTx(false);

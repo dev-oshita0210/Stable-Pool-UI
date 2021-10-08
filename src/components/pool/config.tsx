@@ -61,7 +61,7 @@ export const PoolConfigCard = (props: {
       <div className="pool-settings-grid">
         <>
           <span>LPs Trading Fee:</span>
-          <FeeInput
+          {/* <FeeInput
             numerator={tradeFeeNumerator}
             denominator={tradeFeeDenominator}
             set={(numerator, denominator) =>
@@ -71,7 +71,7 @@ export const PoolConfigCard = (props: {
                 tradeFeeDenominator: denominator,
               })
             }
-          />
+          /> */}
         </>
         <>
           <span>Owner Trading Fee:</span>

@@ -47,7 +47,7 @@ export const removeLiquidity = async (
   if (!pool) {
     return;
   }
-  console.log("remove liquidity");
+  
   notify({
     message: "Removing Liquidity...",
     description: "Please review transactions to approve.",
@@ -132,7 +132,7 @@ export const removeLiquidity = async (
       minAmount1
     )
   );
-  console.log(instructions);
+  
   let tx = await sendTransaction(
     connection,
     wallet,
@@ -236,26 +236,7 @@ export const swap = async (
       )
     : undefined;
 
-  console.log(      
-    pool.pubkeys.account.toString(), '\n',
-    authority.toString(), '\n',
-    wallet.publicKey.toString(), '\n',
-    fromAccount.toString(), '\n',
-    holdingA.toString(), '\n',
-    holdingB.toString(), '\n',
-    toAccount.toString(), '\n',
-    pool.pubkeys.mint.toString(), '\n',
-    pool.pubkeys.feeAccount.toString(), '\n',
-    pool.pubkeys.program.toString(), '\n',
-    programIds().token.toString(), '\n',
-    amountIn,
-    minAmountOut,
-    hostFeeAccount, '\n',
-  )
-
-
-
-
+  
   // swap
   instructions.push(
     swapInstruction(
@@ -275,7 +256,7 @@ export const swap = async (
       hostFeeAccount
     )
   );
-  console.log(instructions);
+  
   let tx = await sendTransaction(
     connection,
     wallet,
@@ -556,7 +537,6 @@ async function _addLiquidityExistingPool(
 
   const reserve0 = accountA.info.amount.toNumber();
   const reserve1 = accountB.info.amount.toNumber();
-  
   const fromA =
     accountA.info.mint.toBase58() === components[0].mintAddress
       ? components[0]
@@ -580,7 +560,6 @@ async function _addLiquidityExistingPool(
   //   (amount0 * (1 - SLIPPAGE) * supply) / reserve0,
   //   (amount1 * (1 - SLIPPAGE) * supply) / reserve1
   // );
-  console.log(amount0, amount1, supply, liquidity, reserve0, reserve1);
   const instructions: TransactionInstruction[] = [];
   const cleanupInstructions: TransactionInstruction[] = [];
 
@@ -597,7 +576,6 @@ async function _addLiquidityExistingPool(
     amount0 + accountRentExempt,
     signers
   );
-  console.log(fromA);
   const fromKeyB = getWrappedAccount(
     instructions,
     cleanupInstructions,
@@ -606,7 +584,7 @@ async function _addLiquidityExistingPool(
     amount1 + accountRentExempt,
     signers
   );
-  console.log(fromB);
+  
   let toAccount = findOrCreateAccountByMint(
     wallet.publicKey,
     wallet.publicKey,
@@ -617,7 +595,7 @@ async function _addLiquidityExistingPool(
     signers,
     new Set<string>([pool.pubkeys.feeAccount.toBase58()])
   );
-  
+
   // create approval for transfer transactions
   instructions.push(
     Token.createApproveInstruction(
@@ -629,7 +607,7 @@ async function _addLiquidityExistingPool(
       amount0
     )
   );
-  
+
   instructions.push(
     Token.createApproveInstruction(
       programIds().token,
@@ -640,20 +618,7 @@ async function _addLiquidityExistingPool(
       amount1
     )
   );
-  // console.log(pool.pubkeys.account,
-  //   authority,
-  //   wallet.publicKey,
-  //   fromKeyA,
-  //   fromKeyB,
-  //   pool.pubkeys.holdingAccounts[0],
-  //   pool.pubkeys.holdingAccounts[1],
-  //   pool.pubkeys.mint,
-  //   toAccount,
-  //   pool.pubkeys.program,
-  //   programIds().token,
-  //   liquidity,
-  //   amount0,
-  //   amount1)
+  
   // depoist
   instructions.push(
     depositInstruction(
@@ -673,7 +638,7 @@ async function _addLiquidityExistingPool(
       amount1
     )
   );
-  console.log(instructions)
+
   let tx = await sendTransaction(
     connection,
     wallet,
@@ -787,7 +752,7 @@ export async function calculateDependentAmount(
   //   : (accountA.info.amount.toNumber() / accountB.info.amount.toNumber()) *
   //     adjAmount;
 
-  // return dependentTokenAmount / depPrecision;  
+  // return dependentTokenAmount / depPrecision;
   return amount*0.996;
 }
 
@@ -960,6 +925,7 @@ async function _addLiquidityNewPool(
       )
     );
   });
+
   instructions.push(
     createInitSwapInstruction(
       tokenSwapAccount,
@@ -974,10 +940,10 @@ async function _addLiquidityNewPool(
       nonce,
       options.curveType,
       options.tradeFeeNumerator,
-      options.tradeFeeDenominator
+      options.tradeFeeDenominator,
     )
   );
-  console.log("djkslffffffffffffffffffffffff");
+
   // All instructions didn't fit in single transaction
   // initialize and provide inital liquidity to swap in 2nd (this prevents loss of funds)
   tx = await sendTransaction(
