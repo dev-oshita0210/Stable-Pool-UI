@@ -236,6 +236,25 @@ export const swap = async (
       )
     : undefined;
 
+  console.log(      
+    pool.pubkeys.account.toString(), '\n',
+    authority.toString(), '\n',
+    wallet.publicKey.toString(), '\n',
+    fromAccount.toString(), '\n',
+    holdingA.toString(), '\n',
+    holdingB.toString(), '\n',
+    toAccount.toString(), '\n',
+    pool.pubkeys.mint.toString(), '\n',
+    pool.pubkeys.feeAccount.toString(), '\n',
+    pool.pubkeys.program.toString(), '\n',
+    programIds().token.toString(), '\n',
+    amountIn,
+    minAmountOut,
+    hostFeeAccount, '\n',
+  )
+
+
+
 
   // swap
   instructions.push(
@@ -598,7 +617,7 @@ async function _addLiquidityExistingPool(
     signers,
     new Set<string>([pool.pubkeys.feeAccount.toBase58()])
   );
-  console.log(instructions)
+  
   // create approval for transfer transactions
   instructions.push(
     Token.createApproveInstruction(
@@ -610,7 +629,7 @@ async function _addLiquidityExistingPool(
       amount0
     )
   );
-  console.log(instructions)
+  
   instructions.push(
     Token.createApproveInstruction(
       programIds().token,
@@ -621,7 +640,20 @@ async function _addLiquidityExistingPool(
       amount1
     )
   );
-  console.log(instructions)
+  // console.log(pool.pubkeys.account,
+  //   authority,
+  //   wallet.publicKey,
+  //   fromKeyA,
+  //   fromKeyB,
+  //   pool.pubkeys.holdingAccounts[0],
+  //   pool.pubkeys.holdingAccounts[1],
+  //   pool.pubkeys.mint,
+  //   toAccount,
+  //   pool.pubkeys.program,
+  //   programIds().token,
+  //   liquidity,
+  //   amount0,
+  //   amount1)
   // depoist
   instructions.push(
     depositInstruction(
