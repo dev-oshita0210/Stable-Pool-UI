@@ -13,7 +13,7 @@ let SWAP_PROGRAM_LEGACY_IDS: PublicKey[];
 export const SWAP_HOST_FEE_ADDRESS = process.env.REACT_APP_SWAP_HOST_FEE_ADDRESS
   ? new PublicKey(`${process.env.REACT_APP_SWAP_HOST_FEE_ADDRESS}`)
   // : 'undefined;
-  : new PublicKey('2Pv5mjmKYAtXNpr3mcsXf7HjtS3fieJeFoWPATVT5rWa')
+  : new PublicKey('611ao5XkdvZRCSjAqWdE1xc5CJj7ydJRQAgndANsHKCy')
 export const SWAP_PROGRAM_OWNER_FEE_ADDRESS = new PublicKey(
   "HfoTxFR1Tm6kGmWgYWD6J7YHVy1UwqSULUGVLXkJqaKN"
 );

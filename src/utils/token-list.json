@@ -11,7 +11,25 @@
       "mintAddress": "Dn4noZ5jgGfkntzcQSUZ8czkreiZ1ForXYoV2H8Dm7S1",
       "tokenName": "USDT SPL-USDT(wormhole)",
       "icon": ""
-    }
+    },
+    {
+      "tokenSymbol": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "tokenName": "USD Coin",
+      "icon": ""
+    },
+    {
+      "tokenSymbol": "wUSDC",
+      "mintAddress": "A9mUU4qviSctJVPJdBJWkb28deg915LYJKrzQ19ji3FM",
+      "tokenName": "USDC SPL-USDC(wormhole)",
+      "icon": ""
+    },
+    {
+      "tokenSymbol": "wBUSD",
+      "mintAddress": "33fsBLA8djQm82RpHmE3SuVrPGtZBWNYExsEUeKX1HXX",
+      "tokenName": "USDC SPL-USDC(wormhole)",
+      "icon": ""
+    }    
   ],
   "testnet": [
     {
