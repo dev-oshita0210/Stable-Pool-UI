@@ -56,7 +56,6 @@ export const AddToLiquidity = () => {
             amount: B.convertAmount(),
           },
         ];
-        console.log(connection, wallet, components, slippage, pool, options);
         addLiquidity(connection, wallet, components, slippage, pool, options)
           .then(() => {
             setPendingTx(false);

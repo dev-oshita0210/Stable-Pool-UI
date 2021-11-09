@@ -26,7 +26,7 @@
     },
     {
       "tokenSymbol": "wBUSD",
-      "mintAddress": "33fsBLA8djQm82RpHmE3SuVrPGtZBWNYExsEUeKX1HXX",
+      "mintAddress": "5RpUwQ8wtdPCZHhu6MERp2RGrpobsbZ6MH5dDHkUjs2",
       "tokenName": "USDC SPL-USDC(wormhole)",
       "icon": ""
     }    
@@ -47,17 +47,35 @@
   ],
   "devnet": [
     {
-      "tokenSymbol": "USDT",
+      "tokenSymbol": "wUSDT",
       "mintAddress": "AXRSKebWSzPrcw9Tmntc19aodgJ5N54Hwy11pXG1qBNc",
       "tokenName": "USDT Test",
       "icon": "https://raw.githubusercontent.com/trustwallet/assets/08d734b5e6ec95227dc50efef3a9cdfea4c398a1/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png"
     },
     {
-      "tokenSymbol": "wUSDT",
+      "tokenSymbol": "USDT",
       "mintAddress": "9DzovcnMT7H17NVxixbjtvsAkrZqUUpFjkTHU3BwDf8v",
       "tokenName": "wUSDT Test",
       "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/bitcoin/info/logo.png"
-    }
+    },
+    {
+      "tokenSymbol": "USDC",
+      "mintAddress": "64cxfj8sKr2qtdgMTjCjXRHdEh96VjfHaiLpE2aaLnni",
+      "tokenName": "USD Coin",
+      "icon": ""
+    },
+    {
+      "tokenSymbol": "wUSDC",
+      "mintAddress": "2MBrJUkL8BLtJtJiLaL7MdPXD3BRwahXzT41hyS8EKsC",
+      "tokenName": "USDC SPL-USDC(wormhole)",
+      "icon": ""
+    },
+    {
+      "tokenSymbol": "wBUSD",
+      "mintAddress": "5izL9xvJuAGREcims7fiP24HqWywpU7PDTEgSF8moVkZ",
+      "tokenName": "USDC SPL-USDC(wormhole)",
+      "icon": ""
+    }    
   ],
   "localnet": [
     {
