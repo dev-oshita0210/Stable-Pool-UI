@@ -18,8 +18,8 @@ export const SWAP_PROGRAM_OWNER_FEE_ADDRESS = new PublicKey(
   "HfoTxFR1Tm6kGmWgYWD6J7YHVy1UwqSULUGVLXkJqaKN"
 );
 
-console.debug(`Host address: ${SWAP_HOST_FEE_ADDRESS?.toBase58()}`);
-console.debug(`Owner address: ${SWAP_PROGRAM_OWNER_FEE_ADDRESS?.toBase58()}`);
+console.log(`Host address: ${SWAP_HOST_FEE_ADDRESS?.toBase58()}`);
+console.log(`Owner address: ${SWAP_PROGRAM_OWNER_FEE_ADDRESS?.toBase58()}`);
 
 // legacy pools are used to show users contributions in those pools to allow for withdrawals of funds
 export const PROGRAM_IDS = [
@@ -43,7 +43,7 @@ export const PROGRAM_IDS = [
   {
     name: "devnet",
     swap: () => ({
-      current: new PublicKey("BkvjiWpcsRESD16mrwdbZPS6K6bgEkBALg9Dodmj9QHo"),
+      current: new PublicKey("5cFkDdCVEoy1QUjhjWKNBX8Ec6Cj6M6KvcSrHNLXeQ5Y"),
       legacy: [
         new PublicKey("H1E1G7eD5Rrcy43xvDxXCsjkRggz7MWNMLGJ8YNzJ8PM"),
         new PublicKey("CMoteLxSPVPoc7Drcggf3QPg3ue8WPpxYyZTg77UGqHo"),

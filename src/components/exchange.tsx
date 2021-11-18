@@ -11,19 +11,19 @@ import { SettingOutlined } from "@ant-design/icons";
 export const ExchangeView = (props: {}) => {
   const { connected, wallet } = useWallet();
   const tabStyle: React.CSSProperties = { width: 120 };
-  const tabList = [
-    {
-      key: "swap",
-      tab: <div style={tabStyle}>Swap</div>,
-      render: () => {
-        return <TradeEntry />;
-      },
-    },
+  const tabList = [    
     {
       key: "pool",
       tab: <div style={tabStyle}>Pool</div>,
       render: () => {
         return <AddToLiquidity />;
+      },
+    },
+    {
+      key: "swap",
+      tab: <div style={tabStyle}>Swap</div>,
+      render: () => {
+        return <TradeEntry />;
       },
     },
   ];

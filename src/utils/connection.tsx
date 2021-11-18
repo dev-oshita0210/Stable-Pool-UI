@@ -172,21 +172,12 @@ export const sendTransaction = async (
   const txid = await connection.sendRawTransaction(rawTransaction, options);
 
   if (awaitConfirmation) {
-    const status = (
-      await connection.confirmTransaction(txid, options && options.commitment)
-    ).value;
-      console.log(awaitConfirmation);
+    const status = (await connection.confirmTransaction(txid, options && options.commitment)).value;
     if (status.err) {
       // TODO: notify
-      notify({
-        message: "Transaction failed...",
-        description: `${txid}`,
-        type: "error",
-      });
-
-      throw new Error(
-        `Raw transaction ${txid} failed (${JSON.stringify(status)})`
-      );
+      console.log(status.err);
+      notify({message: "Transaction failed...",description: `${txid}`,type: "error",});
+      throw new Error(`Raw transaction ${txid} failed (${JSON.stringify(status)})`);
     }
   }
 
