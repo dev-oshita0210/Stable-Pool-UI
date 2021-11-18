@@ -52,8 +52,11 @@ export const PoolConfigCard = (props: {
   setOptions: (config: PoolConfig) => void;
 }) => {
   const {
-    tradeFeeNumerator,
-    tradeFeeDenominator,
+    constant_product_return_fee_numerator,
+  constant_product_fixed_fee_numerator,
+  stable_return_fee_numerator, 
+  stable_fixed_fee_numerator,
+  fee_denominator,
   } = props.options;
 
   return (
@@ -102,7 +105,7 @@ export const PoolConfigCard = (props: {
           /> */}
         </>
         <>
-          <span>Curve Type:</span>
+          {/* <span>Curve Type:</span>
           <Select
             defaultValue="0"
             style={{ width: 200 }}
@@ -115,7 +118,7 @@ export const PoolConfigCard = (props: {
           >
             <Option value="0">Constant Product</Option>
             <Option value="1">Flat</Option>
-          </Select>
+          </Select> */}
         </>
       </div>
     </Card>

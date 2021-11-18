@@ -40,6 +40,8 @@ export const TokenSwapLayout: typeof BufferLayout.Structure = BufferLayout.struc
     publicKey('tokenPool'),
     publicKey('mintA'),
     publicKey('mintB'),
+    BufferLayout.u8('curveType'),
+    BufferLayout.blob(32, 'curveParameters'),
   ]
 );
 
@@ -49,9 +51,11 @@ export const setGlobalStateInstruction = (
   owner:PublicKey,
   fee_owner:PublicKey,
   initial_supply:number,
-  curveType:number,
-  tradeFeeNumerator:number,
-  tradeFeeDenominator:number,
+  constant_product_return_fee_numerator:number,
+  constant_product_fixed_fee_numerator:number,
+  stable_return_fee_numerator:number,
+  stable_fixed_fee_numerator:number,
+  fee_denominator:number,
   decimal:number,
 ) : TransactionInstruction => {
 
@@ -66,32 +70,31 @@ export const setGlobalStateInstruction = (
     BufferLayout.u8("instruction"),
     BufferLayout.blob(32, "owner"),
     BufferLayout.blob(32, "feeOwner"),
-    BufferLayout.nu64("initialSupply"),    
+    BufferLayout.nu64("initialSupply"),
     BufferLayout.u8("lpDecimal"),
-    BufferLayout.nu64("tradeFeeNumerator"),
-    BufferLayout.nu64("tradeFeeDenominator"),    
-    BufferLayout.u8("curveType"),
-    BufferLayout.blob(32, 'curveParameters'),
+    BufferLayout.nu64("constant_product_return_fee_numerator"),
+    BufferLayout.nu64("constant_product_fixed_fee_numerator"),
+    BufferLayout.nu64("stable_return_fee_numerator"),
+    BufferLayout.nu64("stable_fixed_fee_numerator"),
+    BufferLayout.nu64("fee_denominator")
   ]);
-  console.log(initial_supply, tradeFeeDenominator, tradeFeeNumerator);
 
   let data = Buffer.alloc(1024);
   {
     const encodeLength = configDataLayout.encode({
-      instruction:4,
-      owner:owner.toBuffer(),
-      feeOwner:fee_owner.toBuffer(),
-      initialSupply:initial_supply,
-      tradeFeeNumerator:tradeFeeNumerator,
-      tradeFeeDenominator:tradeFeeDenominator,
-      curveType:curveType,
-      lpDecimal:decimal
-    },
-    data
-  );
-  console.log(data);
-  console.log(new Numberu64(tradeFeeNumerator).toBuffer());
-
+        instruction:4,
+        owner:owner.toBuffer(),
+        feeOwner:fee_owner.toBuffer(),
+        initialSupply:initial_supply,
+        lpDecimal:decimal,
+        constant_product_return_fee_numerator:constant_product_return_fee_numerator,
+        constant_product_fixed_fee_numerator:constant_product_fixed_fee_numerator,
+        stable_return_fee_numerator:stable_return_fee_numerator,
+        stable_fixed_fee_numerator:stable_fixed_fee_numerator,
+        fee_denominator:fee_denominator,
+      },
+      data
+    );
     data = data.slice(0, encodeLength);
   }
   return new TransactionInstruction({ keys, programId: swapProgramId, data,});
@@ -108,6 +111,7 @@ export const createInitSwapInstruction = (
   tokenProgramId: PublicKey,
   swapProgramId: PublicKey,
   nonce: number,
+  curveType:number,
 ): TransactionInstruction => {
   const keys = [
     { pubkey: tokenSwapAccount.publicKey, isSigner: false, isWritable: true },
@@ -124,11 +128,15 @@ export const createInitSwapInstruction = (
     BufferLayout.u8("instruction"),
     BufferLayout.u8("nonce"),
     BufferLayout.u8("curveType"),
+    BufferLayout.blob(32, 'curveParameters'),
   ]);
   let data = Buffer.alloc(1024);
   {
     const encodeLength = commandDataLayout.encode({
-        instruction: 0, nonce},data
+        instruction: 0, 
+        nonce, 
+        curveType:curveType,
+      },data
     );
     data = data.slice(0, encodeLength);
   }

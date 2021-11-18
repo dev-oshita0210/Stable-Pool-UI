@@ -34,9 +34,14 @@ export const AddToLiquidity = () => {
   const { slippage } = useSlippageConfig();
   const { env } = useConnectionConfig();
   const [options, setOptions] = useState<PoolConfig>({
-    curveType: 0,
-    tradeFeeNumerator: 40,
-    tradeFeeDenominator: DEFAULT_DENOMINATOR,
+    // curveType: 0,
+    constant_product_return_fee_numerator: 25,
+    constant_product_fixed_fee_numerator: 5,
+    stable_return_fee_numerator: 4, 
+    stable_fixed_fee_numerator: 1,
+    fee_denominator: 10_000,
+    // tradeFeeNumerator: 40,
+    // tradeFeeDenominator: DEFAULT_DENOMINATOR,
   });
 
   const executeAction = !connected

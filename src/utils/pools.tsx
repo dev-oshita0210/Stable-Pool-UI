@@ -514,7 +514,6 @@ async function _addLiquidityNewPool( wallet: any, connection: Connection, compon
     );
   });  
   
-  
   instructions.push(
     setGlobalStateInstruction(
       global_state_key,
@@ -522,12 +521,16 @@ async function _addLiquidityNewPool( wallet: any, connection: Connection, compon
       wallet.publicKey,
       SWAP_HOST_FEE_ADDRESS || wallet.publicKey,
       1000000000,
-      options.curveType,
-      options.tradeFeeNumerator,
-      options.tradeFeeDenominator,
+      options.constant_product_return_fee_numerator,
+      options.constant_product_fixed_fee_numerator,
+      options.stable_return_fee_numerator,
+      options.stable_fixed_fee_numerator,
+      options.fee_denominator,
       LIQUIDITY_TOKEN_PRECISION
     )
   );
+  
+  
 
   instructions.push(
     createInitSwapInstruction(
@@ -540,7 +543,8 @@ async function _addLiquidityNewPool( wallet: any, connection: Connection, compon
       depositorAccount.publicKey,
       programIds().token,
       programIds().swap,
-      nonce
+      nonce,
+      2  // 2: stable, 0: base pool
     )
   );
   // All instructions didn't fit in single transaction

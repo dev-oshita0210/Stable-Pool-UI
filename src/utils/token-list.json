@@ -75,7 +75,13 @@
       "mintAddress": "5izL9xvJuAGREcims7fiP24HqWywpU7PDTEgSF8moVkZ",
       "tokenName": "USDC SPL-USDC(wormhole)",
       "icon": ""
-    }    
+    },
+    {
+      "tokenSymbol": "ATL",
+      "mintAddress": "GxNrMeweoC63Lq2WT9s8VPLFxkbNiEJrUpeZaS2Z48ek",
+      "tokenName": "ATL Token",
+      "icon": ""
+    }  
   ],
   "localnet": [
     {

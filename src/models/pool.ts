@@ -21,7 +21,9 @@ export interface LiquidityComponent {
 }
 
 export interface PoolConfig {
-  curveType: 0 | 1;
-  tradeFeeNumerator: number;
-  tradeFeeDenominator: number;
+  constant_product_return_fee_numerator: number,
+  constant_product_fixed_fee_numerator: number,
+  stable_return_fee_numerator: number, 
+  stable_fixed_fee_numerator: number,
+  fee_denominator: number,
 }
