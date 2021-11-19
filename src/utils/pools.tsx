@@ -180,6 +180,7 @@ export const usePools = () => {
 
     setPools([]);
     const queryPools = async (swapId: PublicKey, isLegacy = false) => {
+      console.log(swapId.toBase58(), isLegacy);
       let poolsArray: PoolInfo[] = [];
       (await connection.getProgramAccounts(swapId))
         .filter(
@@ -280,6 +281,8 @@ export const usePoolForBasket = (mints: (string | undefined)[]) => {
   useEffect(() => {
     (async () => {
       // reset pool during query
+      console.log(pools);
+      console.log(connection);
       setPool(undefined);
       let matchingPool = pools
         .filter((p) => !p.legacy)
@@ -291,10 +294,11 @@ export const usePoolForBasket = (mints: (string | undefined)[]) => {
         );
       for (let i = 0; i < matchingPool.length; i++) {
         const p = matchingPool[i];
-        console.log(p.pubkeys.feeAccount);
+        // console.log(p.pubkeys.feeAccount);
         console.log("matchingPool : p fee account : " + p.pubkeys.feeAccount?.toBase58());
-        console.log(p.pubkeys.holdingAccounts[0]);
-        console.log("matchingPool : p fee account : " + p.pubkeys.holdingAccounts[0].toBase58());
+        // console.log(p.pubkeys.holdingAccounts[0]);
+        // console.log(connection);
+        // console.log("matchingPool : p fee account : " + p.pubkeys.holdingAccounts[0].toBase58());
         const account = await cache.getAccount( connection, p.pubkeys.holdingAccounts[0] );
         if (!account.info.amount.eqn(0)) {
           setPool(p);

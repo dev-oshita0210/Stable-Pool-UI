@@ -7,6 +7,7 @@ import { AccountLayout, u64, MintInfo, MintLayout } from "@solana/spl-token";
 import { usePools } from "./pools";
 import { TokenAccount, PoolInfo } from "./../models";
 import { notify } from "./notifications";
+import { createImportSpecifier } from "typescript";
 
 const AccountsContext = React.createContext<any>(null);
 
@@ -32,6 +33,7 @@ const pendingAccountCalls = new Map<string, Promise<TokenAccount>>();
 const accountsCache = new Map<string, TokenAccount>();
 
 const getAccountInfo = async (connection: Connection, pubKey: PublicKey) => {
+  console.log("get Account Info :" + pubKey.toBase58());
   const info = await connection.getAccountInfo(pubKey);
   if (info === null) {
     throw new Error("Failed to find mint account");
