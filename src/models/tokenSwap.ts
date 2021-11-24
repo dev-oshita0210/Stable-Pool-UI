@@ -19,16 +19,6 @@ export const uint64 = (property: string = "uint64"): Object => {
   return BufferLayout.blob(8, property);
 };
 
-export const TokenSwapLayoutLegacyV0 = BufferLayout.struct([
-  BufferLayout.u8("isInitialized"),
-  BufferLayout.u8("nonce"),
-  publicKey("tokenAccountA"),
-  publicKey("tokenAccountB"),
-  publicKey("tokenPool"),
-  uint64("feesNumerator"),
-  uint64("feesDenominator"),
-]);
-
 export const TokenSwapLayout: typeof BufferLayout.Structure = BufferLayout.struct(
   [
     BufferLayout.u8('version'),
@@ -157,11 +147,12 @@ export const depositInstruction = (
   swapProgramId: PublicKey,
   tokenProgramId: PublicKey,
   maximumTokenA: number | Numberu64,
-  maximumTokenB: number | Numberu64
+  maximumTokenB: number | Numberu64,
+  poolAmount: number | Numberu64,
 ): TransactionInstruction => {
   const dataLayout = BufferLayout.struct([
     BufferLayout.u8("instruction"),
-    // uint64("poolTokenAmount"),
+    uint64("poolTokenAmount"),
     uint64("maximumTokenA"),
     uint64("maximumTokenB"),
   ]);
@@ -170,7 +161,7 @@ export const depositInstruction = (
   dataLayout.encode(
     {
       instruction: 2, // Deposit instruction
-      // poolTokenAmount: new Numberu64(poolTokenAmount).toBuffer(),
+      poolTokenAmount: new Numberu64(poolAmount).toBuffer(),
       maximumTokenA: new Numberu64(maximumTokenA).toBuffer(),
       maximumTokenB: new Numberu64(maximumTokenB).toBuffer(),
     },

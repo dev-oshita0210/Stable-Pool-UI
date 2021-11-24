@@ -185,7 +185,7 @@ const precacheUserTokenAccounts = async (
   if (!owner) {
     return;
   }
-
+  // console.log(owner.toBase58())
   // used for filtering account updates over websocket
   PRECACHED_OWNERS.add(owner.toBase58());
 
@@ -193,11 +193,12 @@ const precacheUserTokenAccounts = async (
   const accounts = await connection.getTokenAccountsByOwner(owner, {
     programId: programIds().token,
   });
+  // console.log(accounts);
   accounts.value
     .map((info) => {
       const data = deserializeAccount(info.account.data);
       // need to query for mint to get decimals
-
+      // console.log(info);
       // TODO: move to web3.js for decoding on the client side... maybe with callback
       const details = {
         pubkey: info.pubkey,
@@ -247,7 +248,7 @@ export function AccountsProvider({ children = null as any }) {
       precacheUserTokenAccounts(connection, wallet.publicKey).then(() => {
         setTokenAccounts(selectUserAccounts());
       });
-
+      console.log(selectUserAccounts());
       // This can return different types of accounts: token-account, mint, multisig
       // TODO: web3.js expose ability to filter. discuss filter syntax
       const tokenSubID = connection.onProgramAccountChange(
@@ -266,11 +267,11 @@ export function AccountsProvider({ children = null as any }) {
               },
               info: data,
             } as TokenAccount;
-
             if (
               PRECACHED_OWNERS.has(details.info.owner.toBase58()) ||
               accountsCache.has(id)
             ) {
+              console.log("Program Account Changed : ",details.pubkey.toBase58())
               accountsCache.set(id, details);
               setTokenAccounts(selectUserAccounts());
               accountEmitter.raiseAccountUpdated(id);

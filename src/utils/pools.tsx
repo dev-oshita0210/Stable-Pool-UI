@@ -7,7 +7,7 @@ import { cache, getCachedAccount, useUserAccounts, useCachedPool, } from "./acco
 import { programIds, SWAP_HOST_FEE_ADDRESS, SWAP_PROGRAM_OWNER_FEE_ADDRESS, WRAPPED_SOL_MINT, } from "./ids";
 import {
   LiquidityComponent, PoolInfo, TokenAccount, createInitSwapInstruction, setGlobalStateInstruction, TokenSwapLayout,
-  depositInstruction, withdrawInstruction, TokenSwapLayoutLegacyV0, swapInstruction, PoolConfig,
+  depositInstruction, withdrawInstruction, swapInstruction, PoolConfig,
 } from "./../models";
 import { sign } from "crypto";
 import { Numberu64 } from "@solana/spl-token-swap";
@@ -155,6 +155,7 @@ const getHoldings = (connection: Connection, accounts: string[]) => {
 };
 
 const toPoolInfo = (item: any, program: PublicKey, toMerge?: PoolInfo) => {
+  // console.log(item);
   const mint = new PublicKey(item.data.tokenPool);
   return {
     pubkeys: {
@@ -168,6 +169,7 @@ const toPoolInfo = (item: any, program: PublicKey, toMerge?: PoolInfo) => {
     },
     legacy: false,
     raw: item,
+    curveType: item.data.curveType,
   } as PoolInfo;
 };
 
@@ -185,8 +187,7 @@ export const usePools = () => {
       (await connection.getProgramAccounts(swapId))
         .filter(
           (item) =>
-            item.account.data.length === TokenSwapLayout.span ||
-            item.account.data.length === TokenSwapLayoutLegacyV0.span
+            item.account.data.length === TokenSwapLayout.span
         )
         .map((item) => {
           let result = {
@@ -197,34 +198,18 @@ export const usePools = () => {
           };
 
           // handling of legacy layout can be removed soon...
-          if (item.account.data.length === TokenSwapLayoutLegacyV0.span) {
-            result.data = TokenSwapLayoutLegacyV0.decode(item.account.data);
-            let pool = toPoolInfo(result, swapId);
-            console.log("*************" + result.data.feeAccount);
-            pool.legacy = isLegacy;
-            poolsArray.push(pool as PoolInfo);
-
-            result.init = async () => {
-              try {
-                // TODO: this is not great
-                // Ideally SwapLayout stores hash of all the mints to make finding of pool for a pair easier
-                const holdings = await Promise.all( getHoldings(connection, [ result.data.tokenAccountA, result.data.tokenAccountB, ]) );
-                pool.pubkeys.holdingMints = [ holdings[0].info.mint, holdings[1].info.mint, ] as PublicKey[];
-              } catch (err) {
-                console.log(err);
-              }
-            };
-          } else {
+         
             result.data = TokenSwapLayout.decode(item.account.data);
-            console.log(result.data);
+            // console.log(result.data);
             // console.log(new PublicKey(undefined).toBase58());
-            console.log("************* : " + result.data.feeAccount);
+            // console.log("************* pool curveType : " + result.data.curveType);
             let pool = toPoolInfo(result, swapId);
             pool.legacy = isLegacy;
             pool.pubkeys.feeAccount = new PublicKey(result.data.feeAccount);
             pool.pubkeys.holdingMints = [new PublicKey(result.data.mintA),new PublicKey(result.data.mintB),] as PublicKey[];
+            pool.curveType = result.data.curveType;
+
             poolsArray.push(pool as PoolInfo);
-          }
           return result;
         });
       
@@ -281,8 +266,8 @@ export const usePoolForBasket = (mints: (string | undefined)[]) => {
   useEffect(() => {
     (async () => {
       // reset pool during query
-      console.log(pools);
-      console.log(connection);
+      // console.log(pools);
+      // console.log(connection);
       setPool(undefined);
       let matchingPool = pools
         .filter((p) => !p.legacy)
@@ -295,7 +280,7 @@ export const usePoolForBasket = (mints: (string | undefined)[]) => {
       for (let i = 0; i < matchingPool.length; i++) {
         const p = matchingPool[i];
         // console.log(p.pubkeys.feeAccount);
-        console.log("matchingPool : p fee account : " + p.pubkeys.feeAccount?.toBase58());
+        // console.log("matchingPool : p fee account : " + p.pubkeys.feeAccount?.toBase58());
         // console.log(p.pubkeys.holdingAccounts[0]);
         // console.log(connection);
         // console.log("matchingPool : p fee account : " + p.pubkeys.holdingAccounts[0].toBase58());
@@ -359,7 +344,31 @@ async function _addLiquidityExistingPool( pool: PoolInfo, components: LiquidityC
   const authority = poolMint.mintAuthority;
   const amount0 = fromA.amount;
   const amount1 = fromB.amount;
-  const liquidity = (amount0 + amount1)/20.0;
+
+  const reserve0 = accountA.info.amount.toNumber();
+  const reserve1 = accountB.info.amount.toNumber();
+  if (!fromA.account || !fromB.account) {
+    throw new Error("Missing account info.");
+  }
+
+  // Uniswap whitepaper: https://uniswap.org/whitepaper.pdf
+  // see: https://uniswap.org/docs/v2/advanced-topics/pricing/
+  // as well as native uniswap v2 oracle: https://uniswap.org/docs/v2/core-concepts/oracles/
+
+  console.log("curve type:" + pool.curveType);
+  let liquidity;
+
+  if(pool.curveType == 2){
+    liquidity = Math.min(
+      (amount0 * supply) / reserve0,
+      (amount1 * supply) / reserve1
+    );
+  }
+  else{
+    liquidity = supply * (amount0 + amount1) / (reserve0 + reserve1);
+  }
+  console.log(liquidity);
+
   const instructions: TransactionInstruction[] = [];
   const cleanupInstructions: TransactionInstruction[] = [];
 
@@ -391,7 +400,8 @@ async function _addLiquidityExistingPool( pool: PoolInfo, components: LiquidityC
       pool.pubkeys.program,
       programIds().token,
       amount0,
-      amount1
+      amount1,
+      liquidity,
     )
   );
 
@@ -416,7 +426,9 @@ function findOrCreateAccountByMint(
   let toAccount: PublicKey;
   if (account && !isWrappedSol) {
     toAccount = account.pubkey;
+    console.log("found account");
   } else {
+    console.log("not found account");
     // creating depositor pool account
     const newToAccount = createSplAccount( instructions, payer, accountRentExempt, mint, owner, AccountLayout.span );
     toAccount = newToAccount.publicKey;
@@ -548,7 +560,7 @@ async function _addLiquidityNewPool( wallet: any, connection: Connection, compon
       programIds().token,
       programIds().swap,
       nonce,
-      2  // 2: stable, 0: base pool
+      0  // 2: stable, 0: base pool
     )
   );
   // All instructions didn't fit in single transaction

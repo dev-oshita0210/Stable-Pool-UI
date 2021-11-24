@@ -12,6 +12,7 @@ export interface PoolInfo {
   };
   legacy: boolean;
   raw: any;
+  curveType:number;
 }
 
 export interface LiquidityComponent {
